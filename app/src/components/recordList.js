@@ -38,6 +38,17 @@ export default function RecordList() {
       columnFilters.forEach((filter, _i) => url.searchParams.set(filter['id'], filter['value']));
       url.searchParams.set("page", pagination.pageIndex)
 
+      if (sorting.length > 0){
+        const sort_term = sorting[0]
+        let dir = "1"
+
+        if (sort_term["desc"] === true) {
+          dir = "-1"
+        }
+
+        url.searchParams.set("sort", sort_term["id"]+":"+dir)
+      }
+
       try {
         const response = await fetch(url.href);
         const json = await response.json();
@@ -89,12 +100,18 @@ export default function RecordList() {
         Cell: ({ cell }) => {
         const cellValue = cell.getValue()
         if (cellValue === 0) {
-          return "False"
+          return "false"
         } else {
           return cellValue
         }
         },
         size: 60,
+      },
+      {
+        accessorKey: 'rc',
+        header: 'Rookie',
+        size: 60,
+        Cell: ({ cell }) => cell.getValue().toString(),
       },
       {
         accessorKey: '_id',
@@ -106,7 +123,6 @@ export default function RecordList() {
         enableColumnFilter: false,
         enableSorting: false
       }
-      
     ],
     [navigate],
   );
