@@ -134,7 +134,6 @@ export default function RecordList() {
 
   return (
    <div>
-     <h3>Record List</h3>
      <MaterialReactTable
       columns={columns}
       data={data}
