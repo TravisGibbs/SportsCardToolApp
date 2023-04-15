@@ -13,8 +13,6 @@ See the main SportsCardTool python library [here](https://github.com/TravisGibbs
 
 Simply navigate to https://sports-card-tool-app.vercel.app/.
 
-```
-
 ## Development
 
 Read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
