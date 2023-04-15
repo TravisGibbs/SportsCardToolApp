@@ -86,6 +86,11 @@ export default function RecordList() {
         size: 60
       },
       {
+        accessorKey: 'year',
+        header: 'Year',
+        size: 60
+      },
+      {
         accessorKey: 'team',
         header: 'Team',
         size: 60
