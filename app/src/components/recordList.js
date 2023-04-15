@@ -152,7 +152,7 @@ export default function RecordList() {
         accessorKey: '_id',
         header: 'Edit',
         Cell: ({ cell }) => {
-          return <Button onClick={()=> navigate('edit/'+cell.getValue())} variant="contained">Edit</Button>
+          return <Button disabled={true} onClick={()=> navigate('edit/'+cell.getValue())} variant="contained">Edit</Button>
         },
         size: 20,
         enableColumnFilter: false,
@@ -203,8 +203,10 @@ export default function RecordList() {
         sorting,
       }}
     />
-    <Link to="https://www.flaticon.com/free-icons/baseball-card" className={classes.link}>Baseball card icons created by Freepik - Flaticon
-    </Link>
+    <div>
+      <Link to="https://www.flaticon.com/free-icons/baseball-card" className={classes.link}>Baseball card icons created by Freepik - Flaticon<br/></Link>
+      <Link to="https://www.flaticon.com/free-icons/flash-cards" className={classes.link}>Flash cards icons created by manshagraphics - Flaticon</Link>
+    </div>
    </div>
  );
 }
