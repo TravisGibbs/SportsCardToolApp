@@ -31,7 +31,7 @@ export default function RecordList() {
       const url = new URL(
         '/api/v1/sportscards/search',
         process.env.NODE_ENV === 'production'
-          ? 'http://travisapi.pythonanywhere.com'
+          ? 'https://travisapi.pythonanywhere.com'
           : 'http://localhost:5000',
       );
 
