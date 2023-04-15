@@ -1,8 +1,29 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import MaterialReactTable from 'material-react-table';
 import Button from '@mui/material/Button';
+import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import {
+  makeStyles,
+} from "@material-ui/core";
 
+const placeholder_url = require('../assets/baseball-card.png');
+
+
+const useStyles = makeStyles((theme) => ({
+  link: {
+    textDecoration: "none",
+    color: "blue",
+    fontSize: "10px",
+    "&:hover": {
+      color: "blue",
+      borderBottom: "1px solid blue",
+    },
+  },
+  image: {
+    width: "50%",
+  }
+}));
  
 export default function RecordList() {
   const [data, setData] = useState([]);
@@ -18,6 +39,7 @@ export default function RecordList() {
     pageIndex: 0,
     pageSize: 20,
   });
+  const classes = useStyles();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,11 +100,24 @@ export default function RecordList() {
       {
         accessorKey: 'front_img',
         header: 'Image',
-        Cell: ({ cell }) => <img alt="Card Front" src={cell.getValue()} />,
+        Cell: ({ cell }) => {
+          const link = cell.getValue()
+          if (link) {
+            return <img className={classes.image} alt="Card Front" src={cell.getValue()} />
+          } else {
+            return <img className={classes.image} alt="Card Front" src={placeholder_url} />
+          }
+        
+      },
       },
       {
         accessorKey: 'name',
         header: 'Name',
+        size: 60
+      },
+      {
+        accessorKey: 'year',
+        header: 'Year',
         size: 60
       },
       {
@@ -117,19 +152,18 @@ export default function RecordList() {
         accessorKey: '_id',
         header: 'Edit',
         Cell: ({ cell }) => {
-          return <Button onClick={()=> navigate('edit/'+cell.getValue())} variant="contained">Edit</Button>
+          return <Button disabled={true} onClick={()=> navigate('edit/'+cell.getValue())} variant="contained">Edit</Button>
         },
         size: 20,
         enableColumnFilter: false,
         enableSorting: false
       }
     ],
-    [navigate],
+    [navigate, classes.image],
   );
 
   return (
    <div>
-     <h3>Record List</h3>
      <MaterialReactTable
       columns={columns}
       data={data}
@@ -169,6 +203,10 @@ export default function RecordList() {
         sorting,
       }}
     />
+    <div>
+      <Link to="https://www.flaticon.com/free-icons/baseball-card" className={classes.link}>Baseball card icons created by Freepik - Flaticon<br/></Link>
+      <Link to="https://www.flaticon.com/free-icons/flash-cards" className={classes.link}>Flash cards icons created by manshagraphics - Flaticon</Link>
+    </div>
    </div>
  );
 }
