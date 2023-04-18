@@ -139,8 +139,14 @@ export default function View() {
   useEffect(() => {
     async function fetchData() {
       const id = params.id.toString();
+      const url = new URL(
+        '/api/v1/sportscards',
+        process.env.NODE_ENV === 'production'
+          ? 'https://travisapi.pythonanywhere.com'
+          : 'http://localhost:5000'
+      );
       const response = await fetch(
-        `http://localhost:5000/api/v1/sportscards/id/${params.id.toString()}`
+        url+`/id/${params.id.toString()}`
       );
 
       if (!response.ok) {
