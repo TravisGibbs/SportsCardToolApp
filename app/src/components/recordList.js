@@ -80,7 +80,6 @@ export default function RecordList() {
   };
 
   const handleClickOpen = cell => {
-    console.log('open');
     setCurrentID(cell.row.original._id);
     setCurrentListing(cell.row.original.listing);
     setFormOpen(true);
@@ -109,7 +108,6 @@ export default function RecordList() {
     };
 
     fetch(url.href, requestOptions).then(response => {
-      console.log(response);
       if (response.status === 200) {
         handleSnack('Image accepted, thank you for contributing!', 'success');
       } else {
@@ -264,7 +262,6 @@ export default function RecordList() {
         Cell: ({cell}) => {
           return (
             <Button
-              disabled={true}
               onClick={() => navigate('view/' + cell.getValue())}
               variant="contained"
             >
@@ -298,7 +295,6 @@ export default function RecordList() {
             fullWidth
             variant="standard"
             onChange={e => {
-              console.log(e.target.value);
               setCurrentEbayLink(e.target.value);
             }}
           />
