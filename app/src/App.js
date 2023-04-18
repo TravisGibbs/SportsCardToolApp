@@ -6,8 +6,6 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import Navbar from './components/navbar';
 import RecordList from './components/recordList';
 import Edit from './components/edit';
-import About from './components/about';
-import Faq from './components/faq';
 import View from './components/view';
 
 
@@ -33,8 +31,6 @@ const App = () => {
         <Route exact path="/" element={<RecordList />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/view/:id" element={<View />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/faq" element={<Faq />} />
       </Routes>
     </Router>
   );

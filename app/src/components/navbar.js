@@ -51,17 +51,11 @@ function Navbar() {
             <Link to="/" className={classes.link}>
               Home
             </Link>
-            <Link to="/about" className={classes.link}>
-              About
-            </Link>
             <Link
               to="https://github.com/TravisGibbs/SportsCardToolLib"
               className={classes.link}
             >
               GitHub
-            </Link>
-            <Link to="/faq" className={classes.link}>
-              FAQ
             </Link>
           </div>
         )}
