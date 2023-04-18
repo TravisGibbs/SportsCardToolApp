@@ -193,7 +193,7 @@ export default function View() {
 
     // This will send a post request to update the data in the database.
     await fetch(
-      `http://localhost:5000/api/v1/sportscards/update/${params.id}`,
+      `http://localhost:5000/api/v1/sportscards/update/${params.id.toString()}`,
       {
         method: 'POST',
         body: JSON.stringify(editedPerson),
@@ -295,12 +295,6 @@ export default function View() {
               </Button>
             </div> }
             </Card>
-        </Grid>
-        <Grid xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid xs={8}>
-          <Item>xs=8</Item>
         </Grid>
       </Grid>
     </Box>
