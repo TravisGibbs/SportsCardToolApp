@@ -219,9 +219,15 @@ export default function RecordList() {
         },
       },
       {
-        accessorKey: 'name',
-        header: 'Name',
+        accessorKey: 'names',
+        header: 'Names',
         size: 60,
+        Cell: ({cell}) => {
+          console.log(cell.getValue())
+          const names = []
+          for (const name of cell.getValue()) { names.push(<p>{name}</p>) }
+          return <div>{names}</div>
+        }
       },
       {
         accessorKey: 'year',
