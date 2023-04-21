@@ -219,8 +219,8 @@ export default function RecordList() {
         },
       },
       {
-        accessorKey: 'name',
-        header: 'Name',
+        accessorKey: 'names',
+        header: 'Names',
         size: 60,
       },
       {
