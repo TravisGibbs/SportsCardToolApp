@@ -449,7 +449,14 @@ export default function View() {
             </div> }
             </Card>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={4}>
+          <Card>
+              <h1 style={{marginLeft: 10}}>
+                Recent {form.names} Sales
+              </h1>
+          </Card>
+        </Grid>
+        <Grid xs={8}>
             <Card>
               <h1 style={{marginLeft: 10}}>
                 Other {form.names} Cards
@@ -474,11 +481,11 @@ export default function View() {
                   : undefined
               }
               onPaginationChange={setPagination}
-              muiTableProps={{
-                sx: {
-                  tableLayout: 'fixed',
-                },
-              }}
+              // muiTableProps={{
+              //   sx: {
+              //     tableLayout: 'fixed',
+              //   },
+              // }}
               muiTablePaginationProps={{
                 rowsPerPageOptions: [],
                 showFirstButton: false,
