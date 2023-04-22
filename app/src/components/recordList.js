@@ -223,10 +223,22 @@ export default function RecordList() {
         header: 'Names',
         size: 60,
         Cell: ({cell}) => {
-          console.log(cell.getValue())
           const names = []
           for (const name of cell.getValue()) { names.push(<p>{name}</p>) }
           return <div>{names}</div>
+        }
+      },
+      {
+        accessorKey: 'short_names',
+        header: 'Bref Link',
+        size: 60,
+        Cell: ({cell}) => {
+          const links = []
+          for (const short_name of cell.getValue()) { 
+            const href = 'https://www.baseball-reference.com/players/' + short_name[0] + '/' + short_name + ".shtml"
+            links.push(<a href={href} >{short_name}</a>) 
+          }
+          return <div>{links}</div>
         }
       },
       {
@@ -242,6 +254,8 @@ export default function RecordList() {
       {
         accessorKey: 'listing',
         header: 'Listing',
+        size: 80,
+        Cell: ({cell}) => <p>{cell.getValue()}</p>
       },
       {
         accessorKey: 'serial',
@@ -249,7 +263,7 @@ export default function RecordList() {
         Cell: ({cell}) => {
           const cellValue = cell.getValue();
           if (cellValue === 0) {
-            return 'false';
+            return 'Standard';
           } else {
             return cellValue;
           }
@@ -363,6 +377,13 @@ export default function RecordList() {
         }}
       />
       <div>
+        <Link
+            to="https://www.baseball-reference.com/"
+            className={classes.link}
+          >
+          Debut Years and Short Names Obtained with the help of Baseball Reference and StatHead
+        </Link>
+        <br />
         <Link
           to="https://www.flaticon.com/free-icons/baseball-card"
           className={classes.link}
