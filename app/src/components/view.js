@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useParams, useNavigate} from 'react-router';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -16,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import {makeStyles} from '@material-ui/core';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import MaterialReactTable from 'material-react-table';
+
 
 const placeholder_url = require('../assets/baseball-card.png');
 
@@ -50,9 +51,22 @@ const useStyles = makeStyles(theme => ({
 export default function View() {
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [snackMessage, setSnackMessage] = React.useState('');
+  const [data, setData] = useState([]);
+  const [isError, setIsError] = useState(false);
+  const [sorting, setSorting] = useState([]);
+  const [rowCount, setRowCount] = useState(0);
+  const [update, setUpdate] = React.useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefetching, setIsRefetching] = useState(false);
   const [snackSeverity, setSnackSeverity] = React.useState('');
   const [formOpen, setFormOpen] = React.useState(false);
   const [currentEbayLink, setCurrentEbayLink] = React.useState('');
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+  const classes = useStyles();
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     auto: '',
     back_img: '',
@@ -60,18 +74,23 @@ export default function View() {
     group: '',
     listing: '',
     mem: '',
-    name: '',
+    short_names: [],
+    names: [],
+    debut: false,
+    pre_major: false,
+    post_career: false,
+    manager: false,
+    error: false,
     number: '',
     price: '',
     rc: '',
     serial: '',
     set: '',
+    set_alt: '',
     team: '',
     year: '',
   });
   const params = useParams();
-  const classes = useStyles();
-  const navigate = useNavigate();
 
   const handleSnack = (message, serverity) => {
     setSnackMessage(message);
@@ -97,6 +116,60 @@ export default function View() {
     setSnackSeverity('');
     setSnackOpen(false);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!data.length) {
+        setIsLoading(true);
+      } else {
+        setIsRefetching(true);
+      }
+
+      const url = new URL(
+        '/api/v1/sportscards/search',
+        process.env.NODE_ENV === 'production'
+          ? 'https://travisapi.pythonanywhere.com'
+          : 'http://localhost:5000'
+      );
+
+      url.searchParams.set("names", form.names)
+      url.searchParams.set('page', pagination.pageIndex);
+
+      if (sorting.length > 0) {
+        const sort_term = sorting[0];
+        let dir = '1';
+
+        if (sort_term['desc'] === true) {
+          dir = '-1';
+        }
+
+        url.searchParams.set('sort', sort_term['id'] + ':' + dir);
+      }
+
+      try {
+        const response = await fetch(url.href);
+        const json = await response.json();
+        const cards = json['cards'];
+        setData(cards);
+        setRowCount(json['total_results']);
+      } catch (error) {
+        setIsError(true);
+        console.error(error);
+        return;
+      }
+      setIsError(false);
+      setIsLoading(false);
+      setIsRefetching(false);
+      setUpdate(false);
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    pagination.pageIndex,
+    pagination.pageSize,
+    sorting,
+    update,
+  ]);
 
   const handleSubmit = () => {
     const url = new URL(
@@ -162,46 +235,123 @@ export default function View() {
     return;
   }, [params.id, navigate]);
 
-  // These methods will update the state properties.
-  function updateForm(value) {
-    return setForm(prev => {
-      return {...prev, ...value};
-    });
-  }
-
-  async function onSubmit(e) {
-    e.preventDefault();
-    const editedPerson = {
-      auto: form.auto,
-      back_img: form.back_img,
-      front_img: form.front_img,
-      group: form.group,
-      listing: form.listing,
-      mem: form.mem,
-      name: form.name,
-      number: form.number,
-      price: form.price,
-      rc: form.rc,
-      serial: form.serial,
-      set: form.set,
-      team: form.team,
-      year: form.year,
-    };
-
-    // This will send a post request to update the data in the database.
-    await fetch(
-      `http://localhost:5000/api/v1/sportscards/update/${params.id.toString()}`,
+  const columns = useMemo(
+    () => [
       {
-        method: 'POST',
-        body: JSON.stringify(editedPerson),
-        headers: {
-          'Content-Type': 'application/json',
+        accessorKey: 'front_img',
+        header: 'Image',
+        size: 80,
+        Cell: ({cell}) => {
+          const link = cell.getValue();
+          if (link) {
+            return (
+              <img
+                className={classes.image}
+                alt="Card Front"
+                src={cell.getValue()}
+              />
+            );
+          } else {
+            return (
+              <div>
+                <img
+                  className={classes.image}
+                  alt="Card Front"
+                  src={placeholder_url}
+                />
+                <br />
+                <Button
+                  className={classes.button}
+                  onClick={() => {
+                    handleClickOpen(cell);
+                  }}
+                  variant="contained"
+                >
+                  Add Photo
+                </Button>
+              </div>
+            );
+          }
         },
-      }
-    );
-
-    navigate('/');
-  }
+      },
+      {
+        accessorKey: 'names',
+        header: 'Names',
+        size: 60,
+        Cell: ({cell}) => {
+          const names = []
+          for (const name of cell.getValue()) { names.push(<p>{name}</p>) }
+          return <div>{names}</div>
+        }
+      },
+      {
+        accessorKey: 'short_names',
+        header: 'Bref Link',
+        size: 60,
+        Cell: ({cell}) => {
+          const links = []
+          for (const short_name of cell.getValue()) { 
+            const href = 'https://www.baseball-reference.com/players/' + short_name[0] + '/' + short_name + ".shtml"
+            links.push(<a href={href} >{short_name}</a>) 
+          }
+          return <div>{links}</div>
+        }
+      },
+      {
+        accessorKey: 'year',
+        header: 'Year',
+        size: 60,
+      },
+      {
+        accessorKey: 'team',
+        header: 'Team',
+        size: 60,
+      },
+      {
+        accessorKey: 'listing',
+        header: 'Listing',
+        size: 80,
+        Cell: ({cell}) => <p>{cell.getValue()}</p>
+      },
+      {
+        accessorKey: 'serial',
+        header: 'Numbered',
+        Cell: ({cell}) => {
+          const cellValue = cell.getValue();
+          if (cellValue === 0) {
+            return 'Standard';
+          } else {
+            return cellValue;
+          }
+        },
+        size: 60,
+      },
+      {
+        accessorKey: 'rc',
+        header: 'Rookie',
+        size: 60,
+        Cell: ({cell}) => cell.getValue().toString(),
+      },
+      {
+        accessorKey: '_id',
+        header: 'View',
+        Cell: ({cell}) => {
+          return (
+            <Button
+              onClick={() => navigate('../view/' + cell.getValue(), {replace: true} )}
+              variant="contained"
+            >
+              View
+            </Button>
+          );
+        },
+        size: 20,
+        enableColumnFilter: false,
+        enableSorting: false,
+      },
+    ],
+    [navigate, classes]
+  );
 
   // This following section will display the form that takes input from the user to update the data.
   return (
@@ -246,12 +396,12 @@ export default function View() {
       </Snackbar>
     <br/>
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} disableEqualOverflow={true}>
         <Grid xs={10}>
-            <Card sx={{  height: 300 }}>
+            <Card>
                 <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    {form.name}
+                  {form.names.join(", ")}
                 </Typography>
                 <Typography variant="h5" component="div">
                     {form.listing}
@@ -260,12 +410,18 @@ export default function View() {
                     {form.team}
                 </Typography>
                 <Typography variant="body2">
-                    {form.set}
+                    Set: {form.set_alt}
                 </Typography>
+                <p>{form.rc && "Rookie Card"}</p>
+                <p>{form.serial === 0 ? "Print Count: standard" : "Print Count: " + form.serial}</p>
+                    <p>{form.error && "Error Card"}</p>
+                    <p>{form.auto && "Autographed Card"}</p>
+                    <p>{form.mem && "Memorabilia Card"}</p>
+                    <p>{form.post_career && "Post-Career Release"}</p>
+                    <p>{form.pre_major && "Pre-Debut Release"}</p>
+                    <p>{form.debut && "Debut Year Card"}</p>
+                    <p>{form.manager && "Manager Card"}</p>
                 </CardContent>
-                <CardActions>
-                <Button size="small">Learn More</Button>
-                </CardActions>
             </Card>
         </Grid>
         <Grid xs={2}>
@@ -291,6 +447,60 @@ export default function View() {
                 Add Photo
               </Button>
             </div> }
+            </Card>
+        </Grid>
+        <Grid xs={4}>
+          <Card>
+              <h1 style={{marginLeft: 10}}>
+                Recent {form.names} Sales
+              </h1>
+          </Card>
+        </Grid>
+        <Grid xs={8}>
+            <Card>
+              <h1 style={{marginLeft: 10}}>
+                Other {form.names} Cards
+              </h1>
+            <MaterialReactTable
+              columns={columns}
+              data={data}
+              getRowId={row => row.phoneNumber}
+              manualPagination
+              enableGlobalFilter={false}
+              enableFilterMatchHighlighting={false}
+              enableGlobalFilterModes={false}
+              enableColumnFilters={false}
+              enableFilters={false}
+              enableColumnActions={false}
+              muiToolbarAlertBannerProps={
+                isError
+                  ? {
+                      color: 'error',
+                      children: 'Error loading data',
+                    }
+                  : undefined
+              }
+              onPaginationChange={setPagination}
+              // muiTableProps={{
+              //   sx: {
+              //     tableLayout: 'fixed',
+              //   },
+              // }}
+              muiTablePaginationProps={{
+                rowsPerPageOptions: [],
+                showFirstButton: false,
+                showLastButton: false,
+              }}
+              onSortingChange={setSorting}
+              rowCount={rowCount}
+              state={{
+                isLoading,
+                pagination,
+                showAlertBanner: isError,
+                showProgressBars: isRefetching,
+                sorting,
+              }}
+            />
             </Card>
         </Grid>
       </Grid>
