@@ -62,7 +62,7 @@ export default function View() {
   const [snackSeverity, setSnackSeverity] = React.useState('');
   const [formOpen, setFormOpen] = React.useState(false);
   const [currentEbayLink, setCurrentEbayLink] = React.useState('');
-  const [currentPoint, setCurrentPoint] = React.useState("<div></div>")
+  const [currentPoint, setCurrentPoint] = React.useState(<div></div>)
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 20,
@@ -205,8 +205,7 @@ export default function View() {
   useEffect(() => {
     async function fetchPoint() {
       if (form.names.length > 0) {
-        const searchTerm = form.names.join("%2B").replace(" ", "%2B")
-        console.log(searchTerm)
+        const searchTerm = (form.set_alt.trim()+"%2B"+form.names.join("%2B")).replace(/ /g, '%2B')
         const response =  await fetch("https://back.130point.com/sales/", {
             "headers": {
               "accept": "*/*",
@@ -233,8 +232,20 @@ export default function View() {
           return;
         } 
 
-        const data  = await response.text()
-        setCurrentPoint(data)
+        let data  = await response.text()
+
+        console.log(data)
+
+        const entries = data.split("var offerData =").splice(1)
+
+        entries.forEach(element => {
+          // TODO: Finding best offers requires pinging another access point indvidually refrain from doing so for now?
+          // const sale_data = JSON.parse(element.split(";")[0])
+          // data = data.replace("<b>Best Offer Sale - Loading Actual Sold Price</b>", '<b>Sale Price:</b> <span class="bidLink" style="color: green; font-weight: bold; text-decoration-line: underline; background-color: lightgreen;">'+sale_data["2"]+sale_data["3"]+'</span>')
+          data = data.replace(" - Loading Actual Sold Price", "")
+        });
+
+        setCurrentPoint(parse(data))
 
       }
     }
@@ -499,7 +510,7 @@ export default function View() {
               <h1 style={{marginLeft: 10}}>
                 Recent {form.names} Sales
               </h1>
-              {parse(currentPoint)}
+              {currentPoint}
           </Card>
         </Grid>
         <Grid xs={8}>
