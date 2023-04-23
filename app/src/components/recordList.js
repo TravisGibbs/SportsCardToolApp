@@ -183,7 +183,8 @@ export default function RecordList() {
       {
         accessorKey: 'front_img',
         header: 'Image',
-        size: 80,
+        size: 150,
+        minSize: 150,
         Cell: ({cell}) => {
           const link = cell.getValue();
           if (link) {
@@ -221,7 +222,8 @@ export default function RecordList() {
       {
         accessorKey: 'names',
         header: 'Names',
-        size: 60,
+        size: 150,
+        minSize: 150,
         Cell: ({cell}) => {
           const names = [];
           for (const name of cell.getValue()) {
@@ -233,7 +235,8 @@ export default function RecordList() {
       {
         accessorKey: 'short_names',
         header: 'Bref Link',
-        size: 60,
+        size: 150,
+        minSize: 150,
         Cell: ({cell}) => {
           const links = [];
           for (const short_name of cell.getValue()) {
@@ -251,17 +254,22 @@ export default function RecordList() {
       {
         accessorKey: 'year',
         header: 'Year',
-        size: 60,
+        size: 120,
+        minSize: 120,
+        Cell: ({cell}) => <p>{cell.getValue()}</p>,
       },
       {
         accessorKey: 'team',
         header: 'Team',
-        size: 60,
+        size: 120,
+        minSize: 120,
+        Cell: ({cell}) => <p>{cell.getValue()}</p>,
       },
       {
         accessorKey: 'listing',
         header: 'Listing',
-        size: 80,
+        size: 150,
+        minSize: 150,
         Cell: ({cell}) => <p>{cell.getValue()}</p>,
       },
       {
@@ -270,17 +278,19 @@ export default function RecordList() {
         Cell: ({cell}) => {
           const cellValue = cell.getValue();
           if (cellValue === 0) {
-            return 'Standard';
+            return "Standard";
           } else {
             return cellValue;
           }
         },
-        size: 60,
+        size: 150,
+        minSize: 150,
       },
       {
         accessorKey: 'rc',
         header: 'Rookie',
-        size: 60,
+        size: 150,
+        minSize: 150,
         Cell: ({cell}) => cell.getValue().toString(),
       },
       {
@@ -297,7 +307,8 @@ export default function RecordList() {
             </Button>
           );
         },
-        size: 20,
+        size: 150,
+        minSize: 150,
         enableColumnFilter: false,
         enableSorting: false,
       },
@@ -349,10 +360,11 @@ export default function RecordList() {
         columns={columns}
         data={data}
         getRowId={row => row.phoneNumber}
-        initialState={{showColumnFilters: true}}
+        initialState={{showColumnFilters: false}}
         manualFiltering
         manualPagination
         manualSorting
+        enableGlobalFilter={false}
         muiToolbarAlertBannerProps={
           isError
             ? {
