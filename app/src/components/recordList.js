@@ -7,7 +7,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import {Link} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core';
 import Snackbar from '@mui/material/Snackbar';
@@ -383,26 +382,6 @@ export default function RecordList() {
           sorting,
         }}
       />
-      <div>
-        <Link to="https://www.baseball-reference.com/" className={classes.link}>
-          Debut Years and Short Names Obtained with the help of Baseball
-          Reference and StatHead
-        </Link>
-        <br />
-        <Link
-          to="https://www.flaticon.com/free-icons/baseball-card"
-          className={classes.link}
-        >
-          Baseball card icons created by Freepik - Flaticon
-          <br />
-        </Link>
-        <Link
-          to="https://www.flaticon.com/free-icons/flash-cards"
-          className={classes.link}
-        >
-          Flash cards icons created by manshagraphics - Flaticon
-        </Link>
-      </div>
     </div>
   );
 }
