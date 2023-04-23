@@ -16,6 +16,9 @@ import {makeStyles} from '@material-ui/core';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import MaterialReactTable from 'material-react-table';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import Sales from './sales';
 
 const placeholder_url = require('../assets/baseball-card.png');
@@ -462,8 +465,18 @@ export default function View() {
           </Grid>
           <Grid xs={4}>
             <Card>
-              <h1 style={{marginLeft: 10}}>Recent {form.names} Sales</h1>
-
+              <Grid container spacing={2} disableEqualOverflow={true}>
+                <Grid xs={2}>
+                  <Tooltip placement="top" sx={{padding: 0}} title={<p>Data sourced from <a style={{color: "inherit"}} href="130point.com">130point</a></p> }>
+                    <IconButton>
+                    <QuestionMarkIcon/>
+                    </IconButton>
+                  </Tooltip>
+                </Grid>
+                <Grid xs={10}>
+                  <h1 style={{margin: 0}}>Recent {form.names} Sales </h1>
+                </Grid>
+              </Grid>
               <Sales names={form.names} set_alt={form.set_alt} />
             </Card>
           </Grid>
