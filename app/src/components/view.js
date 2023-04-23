@@ -467,9 +467,20 @@ export default function View() {
             <Card>
               <Grid container spacing={2} disableEqualOverflow={true}>
                 <Grid xs={2}>
-                  <Tooltip placement="top" sx={{padding: 0}} title={<p>Data sourced from <a style={{color: "inherit"}} href="130point.com">130point</a></p> }>
+                  <Tooltip
+                    placement="top"
+                    sx={{padding: 0}}
+                    title={
+                      <p>
+                        Data sourced from{' '}
+                        <a style={{color: 'inherit'}} href="130point.com">
+                          130point
+                        </a>
+                      </p>
+                    }
+                  >
                     <IconButton>
-                    <QuestionMarkIcon/>
+                      <QuestionMarkIcon />
                     </IconButton>
                   </Tooltip>
                 </Grid>
