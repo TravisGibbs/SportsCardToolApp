@@ -20,37 +20,34 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 const parse = require('html-react-parser');
 
-
 const placeholder_url = require('../assets/baseball-card.png');
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const useStyles = makeStyles(theme => ({
-    link: {
-      textDecoration: 'none',
+  link: {
+    textDecoration: 'none',
+    color: 'blue',
+    fontSize: '10px',
+    '&:hover': {
       color: 'blue',
-      fontSize: '10px',
-      '&:hover': {
-        color: 'blue',
-        borderBottom: '1px solid blue',
-      },
+      borderBottom: '1px solid blue',
     },
-    image: {
-      width: '80%',
-      marginLeft: "10%",
-      marginTop: "10%",
-      objectFit: "contain",
-      height: '80%'
-    },
-    button: {
-      width: '80%',
-      marginLeft: '10% !important',
-    },
-
-  }));
+  },
+  image: {
+    width: '80%',
+    marginLeft: '10%',
+    marginTop: '10%',
+    objectFit: 'contain',
+    height: '80%',
+  },
+  button: {
+    width: '80%',
+    marginLeft: '10% !important',
+  },
+}));
 
 export default function View() {
   const [snackOpen, setSnackOpen] = React.useState(false);
@@ -65,7 +62,7 @@ export default function View() {
   const [snackSeverity, setSnackSeverity] = React.useState('');
   const [formOpen, setFormOpen] = React.useState(false);
   const [currentEbayLink, setCurrentEbayLink] = React.useState('');
-  const [currentPoint, setCurrentPoint] = React.useState(null)
+  const [currentPoint, setCurrentPoint] = React.useState(null);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 20,
@@ -137,7 +134,7 @@ export default function View() {
           : 'http://localhost:5000'
       );
 
-      url.searchParams.set("names", form.names)
+      url.searchParams.set('names', form.names);
       url.searchParams.set('page', pagination.pageIndex);
 
       if (sorting.length > 0) {
@@ -169,12 +166,7 @@ export default function View() {
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    pagination.pageIndex,
-    pagination.pageSize,
-    sorting,
-    update,
-  ]);
+  }, [pagination.pageIndex, pagination.pageSize, sorting, update]);
 
   const handleSubmit = () => {
     const url = new URL(
@@ -208,51 +200,54 @@ export default function View() {
   useEffect(() => {
     async function fetchPoint() {
       if (form.names.length > 0) {
-        const searchTerm = (form.set_alt.trim()+"%2B"+form.names.join("%2B")).replace(/ /g, '%2B')
-        const response =  await fetch("https://back.130point.com/sales/", {
-            "headers": {
-              "accept": "*/*",
-              "accept-language": "en-US,en;q=0.9",
-              "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-              "sec-ch-ua": "\"Chromium\";v=\"112\", \"Google Chrome\";v=\"112\", \"Not:A-Brand\";v=\"99\"",
-              "sec-ch-ua-mobile": "?0",
-              "sec-ch-ua-platform": "\"Windows\"",
-              "sec-fetch-dest": "empty",
-              "sec-fetch-mode": "cors",
-              "sec-fetch-site": "same-site"
-            },
-            "referrer": "https://130point.com/",
-            "referrerPolicy": "strict-origin-when-cross-origin",
-            "body": "query="+searchTerm+"&type=2&subcat=-1",
-            "method": "POST",
-            "mode": "cors",
-            "credentials": "omit"
-          });
+        const searchTerm = (
+          form.set_alt.trim() +
+          '%2B' +
+          form.names.join('%2B')
+        ).replace(/ /g, '%2B');
+        const response = await fetch('https://back.130point.com/sales/', {
+          headers: {
+            accept: '*/*',
+            'accept-language': 'en-US,en;q=0.9',
+            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'sec-ch-ua':
+              '"Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+          },
+          referrer: 'https://130point.com/',
+          referrerPolicy: 'strict-origin-when-cross-origin',
+          body: 'query=' + searchTerm + '&type=2&subcat=-1',
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'omit',
+        });
 
         if (!response.ok) {
           const message = `An error has occurred: ${response.statusText}`;
           window.alert(message);
           return;
-        } 
+        }
 
-        let data  = await response.text()
+        let data = await response.text();
 
-        const entries = data.split("var offerData =").splice(1)
+        const entries = data.split('var offerData =').splice(1);
 
         entries.forEach(element => {
           // TODO: Finding best offers requires pinging another access point indvidually refrain from doing so for now?
           // const sale_data = JSON.parse(element.split(";")[0])
           // data = data.replace("<b>Best Offer Sale - Loading Actual Sold Price</b>", '<b>Sale Price:</b> <span class="bidLink" style="color: green; font-weight: bold; text-decoration-line: underline; background-color: lightgreen;">'+sale_data["2"]+sale_data["3"]+'</span>')
-          data = data.replace(" - Loading Actual Sold Price", "")
+          data = data.replace(' - Loading Actual Sold Price', '');
         });
 
-        setCurrentPoint(parse(data))
-
+        setCurrentPoint(parse(data));
       }
     }
 
-    fetchPoint()
-
+    fetchPoint();
 
     return;
   }, [form.names, form.set_alt]);
@@ -266,9 +261,7 @@ export default function View() {
           ? 'https://travisapi.pythonanywhere.com'
           : 'http://localhost:5000'
       );
-      const response = await fetch(
-        url+`/id/${params.id.toString()}`
-      );
+      const response = await fetch(url + `/id/${params.id.toString()}`);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -336,23 +329,30 @@ export default function View() {
         header: 'Names',
         size: 60,
         Cell: ({cell}) => {
-          const names = []
-          for (const name of cell.getValue()) { names.push(<p>{name}</p>) }
-          return <div>{names}</div>
-        }
+          const names = [];
+          for (const name of cell.getValue()) {
+            names.push(<p>{name}</p>);
+          }
+          return <div>{names}</div>;
+        },
       },
       {
         accessorKey: 'short_names',
         header: 'Bref Link',
         size: 60,
         Cell: ({cell}) => {
-          const links = []
-          for (const short_name of cell.getValue()) { 
-            const href = 'https://www.baseball-reference.com/players/' + short_name[0] + '/' + short_name + ".shtml"
-            links.push(<a href={href} >{short_name}</a>) 
+          const links = [];
+          for (const short_name of cell.getValue()) {
+            const href =
+              'https://www.baseball-reference.com/players/' +
+              short_name[0] +
+              '/' +
+              short_name +
+              '.shtml';
+            links.push(<a href={href}>{short_name}</a>);
           }
-          return <div>{links}</div>
-        }
+          return <div>{links}</div>;
+        },
       },
       {
         accessorKey: 'year',
@@ -368,7 +368,7 @@ export default function View() {
         accessorKey: 'listing',
         header: 'Listing',
         size: 80,
-        Cell: ({cell}) => <p>{cell.getValue()}</p>
+        Cell: ({cell}) => <p>{cell.getValue()}</p>,
       },
       {
         accessorKey: 'serial',
@@ -395,7 +395,9 @@ export default function View() {
         Cell: ({cell}) => {
           return (
             <Button
-              onClick={() => navigate('../view/' + cell.getValue(), {replace: true} )}
+              onClick={() =>
+                navigate('../view/' + cell.getValue(), {replace: true})
+              }
               variant="contained"
             >
               View
@@ -413,7 +415,7 @@ export default function View() {
   // This following section will display the form that takes input from the user to update the data.
   return (
     <div>
-    <Dialog open={formOpen} onClose={handleClose}>
+      <Dialog open={formOpen} onClose={handleClose}>
         <DialogTitle>Upload Image</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -451,116 +453,126 @@ export default function View() {
           {snackMessage}
         </Alert>
       </Snackbar>
-    <br/>
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} disableEqualOverflow={true}>
-        <Grid xs={10}>
+      <br />
+      <Box sx={{flexGrow: 1}}>
+        <Grid container spacing={2} disableEqualOverflow={true}>
+          <Grid xs={10}>
             <Card>
-                <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                  {form.names.join(", ")}
+              <CardContent>
+                <Typography
+                  sx={{fontSize: 14}}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {form.names.join(', ')}
                 </Typography>
                 <Typography variant="h5" component="div">
-                    {form.listing}
+                  {form.listing}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    {form.team}
+                <Typography sx={{mb: 1.5}} color="text.secondary">
+                  {form.team}
                 </Typography>
-                <Typography variant="body2">
-                    Set: {form.set_alt}
-                </Typography>
-                <p>{form.rc && "Rookie Card"}</p>
-                <p>{form.serial === 0 ? "Print Count: standard" : "Print Count: " + form.serial}</p>
-                    <p>{form.error && "Error Card"}</p>
-                    <p>{form.auto && "Autographed Card"}</p>
-                    <p>{form.mem && "Memorabilia Card"}</p>
-                    <p>{form.post_career && "Post-Career Release"}</p>
-                    <p>{form.pre_major && "Pre-Debut Release"}</p>
-                    <p>{form.debut && "Debut Year Card"}</p>
-                    <p>{form.manager && "Manager Card"}</p>
-                </CardContent>
+                <Typography variant="body2">Set: {form.set_alt}</Typography>
+                <p>{form.rc && 'Rookie Card'}</p>
+                <p>
+                  {form.serial === 0
+                    ? 'Print Count: standard'
+                    : 'Print Count: ' + form.serial}
+                </p>
+                <p>{form.error && 'Error Card'}</p>
+                <p>{form.auto && 'Autographed Card'}</p>
+                <p>{form.mem && 'Memorabilia Card'}</p>
+                <p>{form.post_career && 'Post-Career Release'}</p>
+                <p>{form.pre_major && 'Pre-Debut Release'}</p>
+                <p>{form.debut && 'Debut Year Card'}</p>
+                <p>{form.manager && 'Manager Card'}</p>
+              </CardContent>
             </Card>
-        </Grid>
-        <Grid xs={2}>
-            <Card sx={{  height: 300 }}>
-            {form.front_img != null ? <img
-                className={classes.image}
-                alt="Card Front"
-                src={form.front_img}
-              /> :<div>
-              <img
-                className={classes.image}
-                alt="Card Front"
-                src={placeholder_url}
-              />
-              <br />
-              <Button
-                className={classes.button}
-                onClick={() => {
-                  handleClickOpen();
-                }}
-                variant="contained"
-              >
-                Add Photo
-              </Button>
-            </div> }
+          </Grid>
+          <Grid xs={2}>
+            <Card sx={{height: 300}}>
+              {form.front_img != null ? (
+                <img
+                  className={classes.image}
+                  alt="Card Front"
+                  src={form.front_img}
+                />
+              ) : (
+                <div>
+                  <img
+                    className={classes.image}
+                    alt="Card Front"
+                    src={placeholder_url}
+                  />
+                  <br />
+                  <Button
+                    className={classes.button}
+                    onClick={() => {
+                      handleClickOpen();
+                    }}
+                    variant="contained"
+                  >
+                    Add Photo
+                  </Button>
+                </div>
+              )}
             </Card>
-        </Grid>
-        <Grid xs={4}>
-          <Card>
-              <h1 style={{marginLeft: 10}}>
-                Recent {form.names} Sales
-              </h1>
-             
-              {currentPoint ? currentPoint: <Box sx={{ width: '100%' }}>
-                <LinearProgress />
-              </Box>}
-          </Card>
-        </Grid>
-        <Grid xs={8}>
+          </Grid>
+          <Grid xs={4}>
             <Card>
-              <h1 style={{marginLeft: 10}}>
-                Other {form.names} Cards
-              </h1>
-            <MaterialReactTable
-              columns={columns}
-              data={data}
-              getRowId={row => row.phoneNumber}
-              manualPagination
-              enableGlobalFilter={false}
-              enableFilterMatchHighlighting={false}
-              enableGlobalFilterModes={false}
-              enableColumnFilters={false}
-              enableFilters={false}
-              enableColumnActions={false}
-              muiToolbarAlertBannerProps={
-                isError
-                  ? {
-                      color: 'error',
-                      children: 'Error loading data',
-                    }
-                  : undefined
-              }
-              onPaginationChange={setPagination}
-              muiTablePaginationProps={{
-                rowsPerPageOptions: [],
-                showFirstButton: false,
-                showLastButton: false,
-              }}
-              onSortingChange={setSorting}
-              rowCount={rowCount}
-              state={{
-                isLoading,
-                pagination,
-                showAlertBanner: isError,
-                showProgressBars: isRefetching,
-                sorting,
-              }}
-            />
+              <h1 style={{marginLeft: 10}}>Recent {form.names} Sales</h1>
+
+              {currentPoint ? (
+                currentPoint
+              ) : (
+                <Box sx={{width: '100%'}}>
+                  <LinearProgress />
+                </Box>
+              )}
             </Card>
+          </Grid>
+          <Grid xs={8}>
+            <Card>
+              <h1 style={{marginLeft: 10}}>Other {form.names} Cards</h1>
+              <MaterialReactTable
+                columns={columns}
+                data={data}
+                getRowId={row => row.phoneNumber}
+                manualPagination
+                enableGlobalFilter={false}
+                enableFilterMatchHighlighting={false}
+                enableGlobalFilterModes={false}
+                enableColumnFilters={false}
+                enableFilters={false}
+                enableColumnActions={false}
+                muiToolbarAlertBannerProps={
+                  isError
+                    ? {
+                        color: 'error',
+                        children: 'Error loading data',
+                      }
+                    : undefined
+                }
+                onPaginationChange={setPagination}
+                muiTablePaginationProps={{
+                  rowsPerPageOptions: [],
+                  showFirstButton: false,
+                  showLastButton: false,
+                }}
+                onSortingChange={setSorting}
+                rowCount={rowCount}
+                state={{
+                  isLoading,
+                  pagination,
+                  showAlertBanner: isError,
+                  showProgressBars: isRefetching,
+                  sorting,
+                }}
+              />
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
     </div>
   );
 }
