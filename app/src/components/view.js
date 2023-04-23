@@ -16,6 +16,7 @@ import {makeStyles} from '@material-ui/core';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import MaterialReactTable from 'material-react-table';
+const parse = require('html-react-parser');
 
 
 const placeholder_url = require('../assets/baseball-card.png');
@@ -61,6 +62,7 @@ export default function View() {
   const [snackSeverity, setSnackSeverity] = React.useState('');
   const [formOpen, setFormOpen] = React.useState(false);
   const [currentEbayLink, setCurrentEbayLink] = React.useState('');
+  const [currentPoint, setCurrentPoint] = React.useState("<div></div>")
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 20,
@@ -201,7 +203,50 @@ export default function View() {
   };
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchPoint() {
+      if (form.names.length > 0) {
+        const searchTerm = form.names.join("%2B").replace(" ", "%2B")
+        console.log(searchTerm)
+        const response =  await fetch("https://back.130point.com/sales/", {
+            "headers": {
+              "accept": "*/*",
+              "accept-language": "en-US,en;q=0.9",
+              "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+              "sec-ch-ua": "\"Chromium\";v=\"112\", \"Google Chrome\";v=\"112\", \"Not:A-Brand\";v=\"99\"",
+              "sec-ch-ua-mobile": "?0",
+              "sec-ch-ua-platform": "\"Windows\"",
+              "sec-fetch-dest": "empty",
+              "sec-fetch-mode": "cors",
+              "sec-fetch-site": "same-site"
+            },
+            "referrer": "https://130point.com/",
+            "referrerPolicy": "strict-origin-when-cross-origin",
+            "body": "query="+searchTerm+"&type=2&subcat=-1",
+            "method": "POST",
+            "mode": "cors",
+            "credentials": "omit"
+          });
+
+        if (!response.ok) {
+          const message = `An error has occurred: ${response.statusText}`;
+          window.alert(message);
+          return;
+        } 
+
+        const data  = await response.text()
+        setCurrentPoint(data)
+
+      }
+    }
+
+    fetchPoint()
+
+
+    return;
+  }, [form.names, form.set_alt]);
+
+  useEffect(() => {
+    async function fetchCurrentEntry() {
       const id = params.id.toString();
       const url = new URL(
         '/api/v1/sportscards',
@@ -230,7 +275,7 @@ export default function View() {
       setForm(record);
     }
 
-    fetchData();
+    fetchCurrentEntry();
 
     return;
   }, [params.id, navigate]);
@@ -454,6 +499,7 @@ export default function View() {
               <h1 style={{marginLeft: 10}}>
                 Recent {form.names} Sales
               </h1>
+              {parse(currentPoint)}
           </Card>
         </Grid>
         <Grid xs={8}>
@@ -481,11 +527,6 @@ export default function View() {
                   : undefined
               }
               onPaginationChange={setPagination}
-              // muiTableProps={{
-              //   sx: {
-              //     tableLayout: 'fixed',
-              //   },
-              // }}
               muiTablePaginationProps={{
                 rowsPerPageOptions: [],
                 showFirstButton: false,
