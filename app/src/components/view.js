@@ -16,6 +16,8 @@ import {makeStyles} from '@material-ui/core';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import MaterialReactTable from 'material-react-table';
+import LinearProgress from '@mui/material/LinearProgress';
+
 const parse = require('html-react-parser');
 
 
@@ -47,6 +49,7 @@ const useStyles = makeStyles(theme => ({
       width: '80%',
       marginLeft: '10% !important',
     },
+
   }));
 
 export default function View() {
@@ -62,7 +65,7 @@ export default function View() {
   const [snackSeverity, setSnackSeverity] = React.useState('');
   const [formOpen, setFormOpen] = React.useState(false);
   const [currentEbayLink, setCurrentEbayLink] = React.useState('');
-  const [currentPoint, setCurrentPoint] = React.useState(<div></div>)
+  const [currentPoint, setCurrentPoint] = React.useState(null)
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 20,
@@ -510,7 +513,10 @@ export default function View() {
               <h1 style={{marginLeft: 10}}>
                 Recent {form.names} Sales
               </h1>
-              {currentPoint}
+             
+              {currentPoint ? currentPoint: <Box sx={{ width: '100%' }}>
+                <LinearProgress />
+              </Box>}
           </Card>
         </Grid>
         <Grid xs={8}>
