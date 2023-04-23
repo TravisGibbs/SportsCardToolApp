@@ -12,6 +12,9 @@ import {useMediaQuery} from '@material-ui/core';
 import {useTheme} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
+  navBar: {
+    backgroundColor: "#7cb69d !important"
+  },
   navlinks: {
     marginLeft: theme.spacing(10),
     display: 'flex',
@@ -38,9 +41,9 @@ function Navbar() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <AppBar position="static">
+    <AppBar className={classes.navBar} position="static">
       <CssBaseline />
-      <Toolbar>
+      <Toolbar  color='primary'>
         <Typography variant="h4" className={classes.logo}>
           SportsCardTool
         </Typography>

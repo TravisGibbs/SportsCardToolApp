@@ -204,6 +204,7 @@ export default function RecordList() {
                 />
                 <br />
                 <Button
+                  color='secondary'
                   className={classes.button}
                   onClick={() => {
                     handleClickOpen(cell);
@@ -288,6 +289,7 @@ export default function RecordList() {
         Cell: ({cell}) => {
           return (
             <Button
+              color='secondary'
               onClick={() => navigate('view/' + cell.getValue())}
               variant="contained"
             >
@@ -326,8 +328,8 @@ export default function RecordList() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button color='secondary' onClick={handleClose}>Cancel</Button>
+          <Button color='secondary' onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
       <Snackbar
