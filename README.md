@@ -8,7 +8,6 @@ This is the application for SportsCardTool that allows for easy navigation of Sp
 
 See the main SportsCardTool python library [here](https://github.com/TravisGibbs/SportsCardTool) and the flask-api data server [here](https://github.com/TravisGibbs/SportsCardToolApp).
 
-
 ## How to use!
 
 Simply navigate to https://sports-card-tool-app.vercel.app/.

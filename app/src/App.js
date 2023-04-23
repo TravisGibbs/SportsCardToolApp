@@ -8,7 +8,6 @@ import RecordList from './components/recordList';
 import Edit from './components/edit';
 import View from './components/view';
 
-
 const App = () => {
   return (
     <Router>

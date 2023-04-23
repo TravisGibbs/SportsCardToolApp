@@ -30,9 +30,7 @@ export default function Edit() {
           ? 'https://travisapi.pythonanywhere.com'
           : 'http://localhost:5000'
       );
-      const response = await fetch(
-        url+`/id/${params.id.toString()}`
-      );
+      const response = await fetch(url + `/id/${params.id.toString()}`);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
