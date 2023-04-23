@@ -237,8 +237,6 @@ export default function View() {
 
         let data  = await response.text()
 
-        console.log(data)
-
         const entries = data.split("var offerData =").splice(1)
 
         entries.forEach(element => {
