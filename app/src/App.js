@@ -5,7 +5,6 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import {Link} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core';
 
-
 import Navbar from './components/navbar';
 import RecordList from './components/recordList';
 import Edit from './components/edit';
@@ -32,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App = () => {
-  
   const classes = useStyles();
   return (
     <Router>
