@@ -256,6 +256,7 @@ export default function View() {
                 />
                 <br />
                 <Button
+                  color='secondary'
                   className={classes.button}
                   onClick={() => {
                     handleClickOpen(cell);
@@ -340,6 +341,7 @@ export default function View() {
         Cell: ({cell}) => {
           return (
             <Button
+              color='secondary'
               onClick={() =>
                 navigate('../view/' + cell.getValue(), {replace: true})
               }
@@ -381,8 +383,8 @@ export default function View() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button color='secondary' onClick={handleClose}>Cancel</Button>
+          <Button color='secondary' onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
       <Snackbar
@@ -451,6 +453,7 @@ export default function View() {
                   />
                   <br />
                   <Button
+                    color='secondary'
                     className={classes.button}
                     onClick={() => {
                       handleClickOpen();
