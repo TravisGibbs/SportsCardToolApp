@@ -43,8 +43,8 @@ const useStyles = makeStyles(theme => ({
       height: '80%'
     },
     button: {
-      width: '50%',
-      marginLeft: '25% !important',
+      width: '80%',
+      marginLeft: '10% !important',
     },
   }));
 
