@@ -10,6 +10,21 @@ import RecordList from './components/recordList';
 import Edit from './components/edit';
 import View from './components/view';
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#7cb69d',
+    },
+    secondary: {
+      main: '#294936',
+    },
+  },
+});
+
+
 const useStyles = makeStyles(theme => ({
   link: {
     textDecoration: 'none',
@@ -33,48 +48,50 @@ const useStyles = makeStyles(theme => ({
 const App = () => {
   const classes = useStyles();
   return (
-    <Router>
-      <GlobalStyles
-        styles={{
-          '*::-webkit-scrollbar': {
-            width: '0.4em',
-          },
-          '*::-webkit-scrollbar-track': {
-            '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
-          },
-          '*::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(0,0,0,.1)',
-            outline: '1px solid slategrey',
-          },
-        }}
-      />
-      <Navbar />
-      <Routes>
-        <Route exact path="/" element={<RecordList />} />
-        <Route path="/edit/:id" element={<Edit />} />
-        <Route path="/view/:id" element={<View />} />
-      </Routes>
-      <div>
-        <Link to="https://www.baseball-reference.com/" className={classes.link}>
-          Debut Years and Short Names Obtained with the help of Baseball
-          Reference and StatHead
-        </Link>
-        <br />
-        <Link
-          to="https://www.flaticon.com/free-icons/baseball-card"
-          className={classes.link}
-        >
-          Baseball card icons created by Freepik - Flaticon
+    <ThemeProvider theme={theme}>
+      <Router>
+        <GlobalStyles
+          styles={{
+            '*::-webkit-scrollbar': {
+              width: '0.4em',
+            },
+            '*::-webkit-scrollbar-track': {
+              '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+            },
+            '*::-webkit-scrollbar-thumb': {
+              backgroundColor: 'rgba(0,0,0,.1)',
+              outline: '1px solid slategrey',
+            },
+          }}
+        />
+        <Navbar />
+        <Routes>
+          <Route exact path="/" element={<RecordList />} />
+          <Route path="/edit/:id" element={<Edit />} />
+          <Route path="/view/:id" element={<View />} />
+        </Routes>
+        <div>
+          <Link to="https://www.baseball-reference.com/" className={classes.link}>
+            Debut Years and Short Names Obtained with the help of Baseball
+            Reference and StatHead
+          </Link>
           <br />
-        </Link>
-        <Link
-          to="https://www.flaticon.com/free-icons/flash-cards"
-          className={classes.link}
-        >
-          Flash cards icons created by manshagraphics - Flaticon
-        </Link>
-      </div>
-    </Router>
+          <Link
+            to="https://www.flaticon.com/free-icons/baseball-card"
+            className={classes.link}
+          >
+            Baseball card icons created by Freepik - Flaticon
+            <br />
+          </Link>
+          <Link
+            to="https://www.flaticon.com/free-icons/flash-cards"
+            className={classes.link}
+          >
+            Flash cards icons created by manshagraphics - Flaticon
+          </Link>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 };
 
