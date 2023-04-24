@@ -128,7 +128,7 @@ export default function RecordList() {
       } else {
         setIsRefetching(true);
       }
-
+      
       const url = new URL(
         '/api/v1/sportscards/search',
         process.env.NODE_ENV === 'production'
@@ -150,6 +150,8 @@ export default function RecordList() {
         }
 
         url.searchParams.set('sort', sort_term['id'] + ':' + dir);
+      } else {
+        url.searchParams.set('sort', 'year:1');
       }
 
       try {
