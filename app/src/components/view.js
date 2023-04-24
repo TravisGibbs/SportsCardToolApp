@@ -20,6 +20,7 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Sales from './sales';
+import News from './news';
 
 const placeholder_url = require('../assets/baseball-card.png');
 
@@ -473,6 +474,17 @@ export default function View() {
                   </Button>
                 </div>
               )}
+            </Card>
+          </Grid>
+          <Grid xs={6}>
+            <Card sx={{height: 300}}>
+              <h1 style={{marginLeft: 10}}>{form.names} news</h1>
+              <News short_names={form.short_names} />
+            </Card>
+          </Grid>
+          <Grid xs={6}>
+            <Card sx={{height: 300}}>
+              <h1 style={{marginLeft: 10}}>{form.names} Price Tool</h1>
             </Card>
           </Grid>
           <Grid xs={4}>
