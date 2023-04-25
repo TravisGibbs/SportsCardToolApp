@@ -11,6 +11,7 @@ import {useNavigate} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import {capitalizeName} from './view'
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -229,7 +230,7 @@ export default function RecordList() {
         Cell: ({cell}) => {
           const names = [];
           for (const name of cell.getValue()) {
-            names.push(<p>{name}</p>);
+            names.push(<p>{capitalizeName(name)}</p>);
           }
           return <div>{names}</div>;
         },

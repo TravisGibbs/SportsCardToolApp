@@ -20,8 +20,18 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Sales from './sales';
-
+import News from './news';
 const placeholder_url = require('../assets/baseball-card.png');
+
+export function capitalizeName(string) {
+  let final_str = ""
+  string.split(" ").forEach(string => {
+    final_str = final_str.concat(string.charAt(0).toUpperCase() + string.slice(1) + " ");
+  })
+
+  return final_str.slice(null ,final_str.length-1)
+} 
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -279,7 +289,7 @@ export default function View() {
         Cell: ({cell}) => {
           const names = [];
           for (const name of cell.getValue()) {
-            names.push(<p>{name}</p>);
+            names.push(<p>{capitalizeName(name)}</p>);
           }
           return <div>{names}</div>;
         },
@@ -420,7 +430,7 @@ export default function View() {
                   color="text.secondary"
                   gutterBottom
                 >
-                  {form.names.join(', ')}
+                  {capitalizeName(form.names.join(" "))}
                 </Typography>
                 <Typography variant="h5" component="div">
                   {form.listing}
@@ -475,6 +485,17 @@ export default function View() {
               )}
             </Card>
           </Grid>
+          <Grid xs={6}>
+            <Card sx={{height: 300}}>
+              <h1 style={{marginLeft: 10}}>{capitalizeName(form.names.join(" "))} news</h1>
+              <News short_names={form.short_names} />
+            </Card>
+          </Grid>
+          <Grid xs={6}>
+            <Card sx={{height: 300}}>
+              <h1 style={{marginLeft: 10}}>{capitalizeName(form.names.join(" "))} Price Tool</h1>
+            </Card>
+          </Grid>
           <Grid xs={4}>
             <Card>
               <Grid container spacing={2} disableEqualOverflow={true}>
@@ -497,7 +518,7 @@ export default function View() {
                   </Tooltip>
                 </Grid>
                 <Grid xs={10}>
-                  <h1 style={{margin: 0}}>Recent {form.names} Sales </h1>
+                  <h1 style={{margin: 0}}>Recent {capitalizeName(form.names.join(" "))} Sales </h1>
                 </Grid>
               </Grid>
               <Sales names={form.names} set_alt={form.set_alt} />
@@ -505,7 +526,7 @@ export default function View() {
           </Grid>
           <Grid xs={8}>
             <Card>
-              <h1 style={{marginLeft: 10}}>Other {form.names} Cards</h1>
+              <h1 style={{marginLeft: 10}}>Other {capitalizeName(form.names.join(" "))} Cards</h1>
               <MaterialReactTable
                 columns={columns}
                 data={data}
