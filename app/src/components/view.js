@@ -485,10 +485,11 @@ export default function View() {
               )}
             </Card>
           </Grid>
+          {/* TO DO Before release develop price estimator and news tool */}
           <Grid xs={6}>
             <Card sx={{height: 300}}>
               <h1 style={{marginLeft: 10}}>{capitalizeName(form.names.join(" "))} news</h1>
-              <News short_names={form.short_names} />
+              <News short_names={form.short_names} names={form.names}/>
             </Card>
           </Grid>
           <Grid xs={6}>
