@@ -362,7 +362,7 @@ export default function View() {
           return (
             <Button
               color='secondary'
-              onClick={() => navigate('view/' + cell.getValue())}
+              onClick={() => navigate('/view/' + cell.getValue())}
               variant="contained"
             >
               View
