@@ -86,11 +86,7 @@ export default function View() {
     group: '',
     listing: '',
     mem: '',
-    short_names: [],
-    names: [],
-    debut: false,
-    pre_major: false,
-    post_career: false,
+    players: [],
     manager: false,
     error: false,
     number: '',
@@ -119,6 +115,12 @@ export default function View() {
     setCurrentEbayLink('');
   };
 
+  const name_list = [];
+  for (const player of form.players) {
+    name_list.push(capitalizeName(player.name));
+  }
+  const name_str = name_list.join(", ")
+
   const handleSnackClose = (_event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -144,7 +146,8 @@ export default function View() {
           : 'http://localhost:5000'
       );
 
-      url.searchParams.set('names', form.names);
+      // FIX
+      url.searchParams.set('names', form.players);
       url.searchParams.set('page', pagination.pageIndex);
 
       if (sorting.length > 0) {
@@ -282,33 +285,35 @@ export default function View() {
         },
       },
       {
-        accessorKey: 'names',
+        accessorKey: 'players',
         header: 'Names',
         size: 150,
         minSize: 150,
         Cell: ({cell}) => {
           const names = [];
-          for (const name of cell.getValue()) {
-            names.push(<p>{capitalizeName(name)}</p>);
+          for (const player of cell.getValue()) {
+            names.push(<p>{capitalizeName(player.name)}</p>);
           }
           return <div>{names}</div>;
         },
       },
       {
-        accessorKey: 'short_names',
+        accessorKey: 'players',
         header: 'Bref Link',
         size: 150,
         minSize: 150,
         Cell: ({cell}) => {
           const links = [];
-          for (const short_name of cell.getValue()) {
-            const href =
-              'https://www.baseball-reference.com/players/' +
-              short_name[0] +
-              '/' +
-              short_name +
-              '.shtml';
-            links.push(<a href={href}>{short_name}</a>);
+          for (const player of cell.getValue()) {
+            if (player.short_name) {
+              const href =
+                'https://www.baseball-reference.com/players/' +
+                player.short_name[0] +
+                '/' +
+                player.short_name +
+                '.shtml';
+              links.push(<p><a href={href}>{player.short_name}</a></p>);
+            }
           }
           return <div>{links}</div>;
         },
@@ -430,7 +435,7 @@ export default function View() {
                   color="text.secondary"
                   gutterBottom
                 >
-                  {capitalizeName(form.names.join(" "))}
+                  {name_str}
                 </Typography>
                 <Typography variant="h5" component="div">
                   {form.listing}
@@ -487,13 +492,13 @@ export default function View() {
           </Grid>
           <Grid xs={6}>
             <Card sx={{height: 300}}>
-              <h1 style={{marginLeft: 10}}>{capitalizeName(form.names.join(" "))} news</h1>
-              <News short_names={form.short_names} />
+              <h1 style={{marginLeft: 10}}>{name_str} news</h1>
+              <News players={form.players} />
             </Card>
           </Grid>
           <Grid xs={6}>
             <Card sx={{height: 300}}>
-              <h1 style={{marginLeft: 10}}>{capitalizeName(form.names.join(" "))} Price Tool</h1>
+              <h1 style={{marginLeft: 10}}>{name_str} Price Tool</h1>
             </Card>
           </Grid>
           <Grid xs={4}>
@@ -518,7 +523,7 @@ export default function View() {
                   </Tooltip>
                 </Grid>
                 <Grid xs={10}>
-                  <h1 style={{margin: 0}}>Recent {capitalizeName(form.names.join(" "))} Sales </h1>
+                  <h1 style={{margin: 0}}>Recent {name_str} Sales </h1>
                 </Grid>
               </Grid>
               <Sales names={form.names} set_alt={form.set_alt} />
@@ -526,7 +531,7 @@ export default function View() {
           </Grid>
           <Grid xs={8}>
             <Card>
-              <h1 style={{marginLeft: 10}}>Other {capitalizeName(form.names.join(" "))} Cards</h1>
+              <h1 style={{marginLeft: 10}}>Other {name_str} Cards</h1>
               <MaterialReactTable
                 columns={columns}
                 data={data}
