@@ -20,7 +20,6 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Sales from './sales';
-import News from './news';
 const placeholder_url = require('../assets/baseball-card.png');
 
 export function capitalizeName(string) {
@@ -133,7 +132,7 @@ export default function View() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!data.length) {
+      if (form.players.length < 1) {
         setIsLoading(true);
       } else {
         setIsRefetching(true);
@@ -145,17 +144,12 @@ export default function View() {
           ? 'https://travisapi.pythonanywhere.com'
           : 'http://localhost:5000'
       );
-      if (form) {
-        const shortNameList = []
-        form.players.forEach((player) => {
-          shortNameList.push(player.short_name)
-        })
+      const shortNameList = []
+      form.players.forEach((player) => {
+        shortNameList.push(player.short_name)
+      })
 
-        console.log(form, shortNameList)
-
-        url.searchParams.set('players', shortNameList.join(","));
-    }
-
+      url.searchParams.set('players', shortNameList.join(","));
       url.searchParams.set('page', pagination.pageIndex);
 
       if (sorting.length > 0) {
@@ -187,7 +181,7 @@ export default function View() {
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagination.pageIndex, pagination.pageSize, sorting, update]);
+  }, [pagination.pageIndex, pagination.pageSize, sorting, update, form]);
 
   const handleSubmit = () => {
     const url = new URL(
