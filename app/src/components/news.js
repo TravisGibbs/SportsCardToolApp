@@ -10,10 +10,9 @@ export default function News(props) {
  
   useEffect(() => {
     async function fetchNews() {
-      if (props.short_names.length > 0) {
+      if (props.players.length > 0) {
         
-
-        let data = "<div>Placeholder</div>"
+        let data = "<div>NEWS PLACEHOLDER</div>"
         
         setCurrentNews(parse(data));
       }
@@ -22,7 +21,7 @@ export default function News(props) {
     fetchNews();
 
     return;
-  }, [props.short_names]);
+  }, [props.players]);
 
 
   return (
