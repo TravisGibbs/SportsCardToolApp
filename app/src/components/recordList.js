@@ -184,6 +184,7 @@ export default function RecordList() {
   const columns = useMemo(
     () => [
       {
+        enableColumnFilter: false,
         accessorKey: 'front_img',
         header: 'Image',
         size: 150,
@@ -223,33 +224,36 @@ export default function RecordList() {
         },
       },
       {
-        accessorKey: 'names',
+        enableColumnFilter: false,
+        accessorKey: 'players',
         header: 'Names',
         size: 150,
         minSize: 150,
         Cell: ({cell}) => {
           const names = [];
-          for (const name of cell.getValue()) {
-            names.push(<p>{capitalizeName(name)}</p>);
+          for (const player of cell.getValue()) {
+            names.push(<p>{capitalizeName(player.name)}</p>);
           }
           return <div>{names}</div>;
         },
       },
       {
-        accessorKey: 'short_names',
-        header: 'Bref Link',
+        accessorKey: 'players',
+        header: 'Bref IDs',
         size: 150,
         minSize: 150,
         Cell: ({cell}) => {
           const links = [];
-          for (const short_name of cell.getValue()) {
-            const href =
-              'https://www.baseball-reference.com/players/' +
-              short_name[0] +
-              '/' +
-              short_name +
-              '.shtml';
-            links.push(<a href={href}>{short_name}</a>);
+          for (const player of cell.getValue()) {
+            if (player.short_name) {
+              const href =
+                'https://www.baseball-reference.com/players/' +
+                player.short_name[0] +
+                '/' +
+                player.short_name +
+                '.shtml';
+              links.push(<p><a href={href}>{player.short_name}</a></p>);
+            }
           }
           return <div>{links}</div>;
         },
