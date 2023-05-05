@@ -498,17 +498,6 @@ export default function View() {
               )}
             </Card>
           </Grid>
-          <Grid xs={6}>
-            <Card sx={{height: 300}}>
-              <h1 style={{marginLeft: 10}}>{name_str} news</h1>
-              <News players={form.players} />
-            </Card>
-          </Grid>
-          <Grid xs={6}>
-            <Card sx={{height: 300}}>
-              <h1 style={{marginLeft: 10}}>{name_str} Price Tool</h1>
-            </Card>
-          </Grid>
           <Grid xs={4}>
             <Card>
               <Grid container spacing={2} disableEqualOverflow={true}>
