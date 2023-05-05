@@ -534,7 +534,7 @@ export default function View() {
                   <h1 style={{margin: 0}}>Recent {name_str} Sales </h1>
                 </Grid>
               </Grid>
-              <Sales names={form.names} set_alt={form.set_alt} />
+              <Sales names={name_list} set_alt={form.set_alt} />
             </Card>
           </Grid>
           <Grid xs={8}>
