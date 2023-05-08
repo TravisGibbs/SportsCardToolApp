@@ -136,48 +136,47 @@ export default function View() {
         setIsLoading(true);
       } else {
         setIsRefetching(true);
-      }
-
-      const url = new URL(
-        '/api/v1/sportscards/search',
-        process.env.NODE_ENV === 'production'
-          ? 'https://travisapi.pythonanywhere.com'
-          : 'http://localhost:5000'
-      );
-      const shortNameList = []
-      form.players.forEach((player) => {
-        shortNameList.push(player.short_name)
-      })
-
-      url.searchParams.set('players', shortNameList.join(","));
-      url.searchParams.set('page', pagination.pageIndex);
-
-      if (sorting.length > 0) {
-        const sort_term = sorting[0];
-        let dir = '1';
-
-        if (sort_term['desc'] === true) {
-          dir = '-1';
+        const url = new URL(
+          '/api/v1/sportscards/search',
+          process.env.NODE_ENV === 'production'
+            ? 'https://travisapi.pythonanywhere.com'
+            : 'http://localhost:5000'
+        );
+        const shortNameList = []
+        form.players.forEach((player) => {
+          shortNameList.push(player.short_name)
+        })
+  
+        url.searchParams.set('players', shortNameList.join(","));
+        url.searchParams.set('page', pagination.pageIndex);
+  
+        if (sorting.length > 0) {
+          const sort_term = sorting[0];
+          let dir = '1';
+  
+          if (sort_term['desc'] === true) {
+            dir = '-1';
+          }
+  
+          url.searchParams.set('sort', sort_term['id'] + ':' + dir);
         }
-
-        url.searchParams.set('sort', sort_term['id'] + ':' + dir);
+  
+        try {
+          const response = await fetch(url.href);
+          const json = await response.json();
+          const cards = json['cards'];
+          setData(cards);
+          setRowCount(json['total_results']);
+        } catch (error) {
+          setIsError(true);
+          console.error(error);
+          return;
+        }
+        setIsError(false);
+        setIsLoading(false);
+        setIsRefetching(false);
+        setUpdate(false);
       }
-
-      try {
-        const response = await fetch(url.href);
-        const json = await response.json();
-        const cards = json['cards'];
-        setData(cards);
-        setRowCount(json['total_results']);
-      } catch (error) {
-        setIsError(true);
-        console.error(error);
-        return;
-      }
-      setIsError(false);
-      setIsLoading(false);
-      setIsRefetching(false);
-      setUpdate(false);
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -493,7 +492,7 @@ export default function View() {
             </Card>
           </Grid>
           <Grid xs={4}>
-            <Card>
+            <Card sx={{height: 800, overflow: "scroll"}}>
               <Grid container spacing={2} disableEqualOverflow={true}>
                 <Grid xs={2}>
                   <Tooltip
@@ -521,7 +520,7 @@ export default function View() {
             </Card>
           </Grid>
           <Grid xs={8}>
-            <Card>
+            <Card  sx={{height: 800, overflow: "scroll"}}>
               <h1 style={{marginLeft: 10}}>Other {name_str} Cards</h1>
               <MaterialReactTable
                 columns={columns}
