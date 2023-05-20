@@ -67,7 +67,7 @@ function Navbar() {
           </div>
         )}
       </Toolbar>
-      <img className={classes.img} alt="Custom badge" src="https://img.shields.io/endpoint?color=%237cb69d&style=for-the-badge&url=https%3A%2F%2Ftravisapi.pythonanywhere.com%2Fapi%2Fv1%2Fsportscards%2Fyears_available_badge"></img>
+      <img className={classes.img} alt="Custom badge" src="https://img.shields.io/endpoint?url=https%3A%2F%2Ftravisapi.pythonanywhere.com%2Fapi%2Fv1%2Fsportscards%2Fyears_available_badge"></img>
 
     </AppBar>
   );
