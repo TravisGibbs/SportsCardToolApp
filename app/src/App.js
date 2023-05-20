@@ -11,6 +11,7 @@ import Edit from './components/edit';
 import View from './components/view';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Home from './components/home';
 
 const theme = createTheme({
   palette: {
@@ -66,7 +67,8 @@ const App = () => {
         />
         <Navbar />
         <Routes>
-          <Route exact path="/" element={<RecordList />} />
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/cards" element={<RecordList />} />
           <Route path="/edit/:id" element={<Edit />} />
           <Route path="/view/:id" element={<View />} />
         </Routes>
