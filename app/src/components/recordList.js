@@ -131,7 +131,6 @@ export default function RecordList() {
       }
       
 
-      console.log("here")
       const url = new URL(
         '/api/v1/sportscards/search',
         process.env.NODE_ENV === 'production'
