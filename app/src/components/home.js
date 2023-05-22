@@ -6,12 +6,12 @@ import {
 
 const useStyles = makeStyles(theme => ({
     backgroundImg: {
-        backgroundImg: "url(https://www.invaluable.com/blog/wp-content/uploads/sites/77/2018/04/invaluable-baseball-card-value-hero-v2.jpg)",
+        backgroundBlendMode: "saturation",
+        backgroundImage: "linear-gradient(black, black), url(https://www.invaluable.com/blog/wp-content/uploads/sites/77/2018/04/invaluable-baseball-card-value-hero-v2.jpg)",
         height: "100%",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
-      
     },
     navBar: {
       backgroundColor: "#7cb69d !important"
@@ -39,9 +39,10 @@ const useStyles = makeStyles(theme => ({
 export default function Home() {
     const classes = useStyles();
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-        <div className={classes.backgroundImg}>test</div>
+        <div className={classes.backgroundImg}>
+
+        </div>
     )
 }
