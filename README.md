@@ -4,7 +4,7 @@
 
 This is the application for SportsCardTool that allows for easy navigation of SportsCard data via React.
 
-See the main SportsCardTool python library [here](https://github.com/TravisGibbs/SportsCardTool) and the flask-api data server [here](https://github.com/TravisGibbs/SportsCardToolApp).
+See the main SportsCardTool python library [here](https://github.com/TravisGibbs/SportsCardTool).
 
 ## How to use!
 
