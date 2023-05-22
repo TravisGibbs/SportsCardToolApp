@@ -1,5 +1,3 @@
-import {useMediaQuery} from '@material-ui/core';
-import {useTheme} from '@material-ui/core';
 import {
     makeStyles,
   } from '@material-ui/core';
@@ -9,40 +7,32 @@ const useStyles = makeStyles(theme => ({
         backgroundBlendMode: "saturation",
         backgroundImage: "linear-gradient(black, black), url(https://www.invaluable.com/blog/wp-content/uploads/sites/77/2018/04/invaluable-baseball-card-value-hero-v2.jpg)",
         height: "100%",
+        filter: "blur(10px)",
+        webkitFilter: "blur(10px)",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
     },
-    navBar: {
-      backgroundColor: "#7cb69d !important"
+    fullHeight: {
+      height: "100%"
     },
-    navlinks: {
-      marginLeft: theme.spacing(10),
-      display: 'flex',
-    },
-    logo: {
-      flexGrow: '1',
-      cursor: 'pointer',
-    },
-    link: {
-      textDecoration: 'none',
-      color: 'white',
-      fontSize: '20px',
-      marginLeft: theme.spacing(5),
-      '&:hover': {
-        color: 'yellow',
-        borderBottom: '1px solid white',
-      },
-    },
+    menu: {
+      top: "20%",
+      left: "10%",
+      position: "absolute"
+    }
   }));
 
 export default function Home() {
     const classes = useStyles();
-    const theme = useTheme();
 
     return (
+      <div className={classes.fullHeight}>
         <div className={classes.backgroundImg}>
-
         </div>
+        <div className={classes.menu}>
+          <p>SportsCardTool</p>
+        </div>
+      </div>
     )
 }
