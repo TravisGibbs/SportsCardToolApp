@@ -130,6 +130,7 @@ export default function RecordList() {
         setIsRefetching(true);
       }
       
+
       const url = new URL(
         '/api/v1/sportscards/search',
         process.env.NODE_ENV === 'production'
@@ -142,18 +143,21 @@ export default function RecordList() {
       );
       url.searchParams.set('page', pagination.pageIndex);
 
-      if (sorting.length > 0) {
-        const sort_term = sorting[0];
-        let dir = '1';
-
-        if (sort_term['desc'] === true) {
+      let sortString = ""
+      sorting.forEach(sortTerm => {
+        let dir = '1'
+        if (sortTerm['desc'] === true) {
           dir = '-1';
         }
 
-        url.searchParams.set('sort', sort_term['id'] + ':' + dir);
-      } else {
-        url.searchParams.set('sort', 'year:1');
-      }
+        if (sortString.length !== 0) {
+          sortString += ","+sortTerm['id']+":"+dir
+        } else {
+          sortString += sortTerm['id']+":"+dir
+        }
+      })
+
+      url.searchParams.set('sort', sortString)
 
       try {
         const response = await fetch(url.href);
