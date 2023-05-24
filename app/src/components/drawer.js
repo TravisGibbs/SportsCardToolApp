@@ -37,7 +37,7 @@ function DrawerComponent() {
           </ListItem>
           <ListItem onClick={() => setOpenDrawer(false)}>
             <ListItemText>
-              <Link to="/github" className={classes.link}>
+              <Link to="https://github.com/TravisGibbs/SportsCardToolLib" className={classes.link}>
                 GitHub
               </Link>
             </ListItemText>
