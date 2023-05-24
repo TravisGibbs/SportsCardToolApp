@@ -13,7 +13,9 @@ import {useTheme} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   img: {
-    width: '25% !important',
+//     width: '25% !important',
+    max-width:"50%",
+    height="auto"
     
   },
   navBar: {
