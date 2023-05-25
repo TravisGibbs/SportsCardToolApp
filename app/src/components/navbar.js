@@ -13,7 +13,7 @@ import {useTheme} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   img: {
-    maxWidth: "50%",
+    maxWidth: "fit-content",
     height: "auto"
     
   },
