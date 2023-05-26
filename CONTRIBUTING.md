@@ -7,7 +7,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ## Getting Started
 
-* In order to contribute simply build the project using npm and then start developing. To use server side functionality for data api run SportsCardToolServer locally on your machine found [here](https://github.com/TravisGibbs/SportsCardToolApp).
+* In order to contribute simply build the project using npm and then start developing.
 
 ## Pull Request Process
 
