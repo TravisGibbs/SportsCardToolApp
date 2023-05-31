@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
         backgroundSize: "cover"
     },
     pageHeight: {
-      height: "80%"
+      height: "85%"
     },
     menu: {
       top: "20%",
