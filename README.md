@@ -8,7 +8,7 @@ See the main SportsCardTool python library [here](https://github.com/TravisGibbs
 
 ## How to use!
 
-Simply navigate to https://sports-card-tool-app.vercel.app/.
+Simply navigate to https://www.sportscards.tools/.
 
 ## Development
 
