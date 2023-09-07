@@ -142,12 +142,19 @@ export default function View() {
             ? 'https://travisapi.pythonanywhere.com'
             : 'http://localhost:5000'
         );
-        const shortNameList = []
-        form.players.forEach((player) => {
-          shortNameList.push(player.short_name)
-        })
-  
-        url.searchParams.set('players', shortNameList.join(","));
+        if (form.players.length > 1) {
+          const shortNameList = []
+          form.players.forEach((player) => {
+            shortNameList.push(player.short_name)
+          })
+    
+          url.searchParams.set('players', shortNameList.join(","));
+        }
+        else {
+          console.log("only one player")
+          url.searchParams.set('players', players[0].short_name);
+        }
+        
         url.searchParams.set('page', pagination.pageIndex);
   
         if (sorting.length > 0) {
