@@ -151,7 +151,6 @@ export default function View() {
           url.searchParams.set('players', shortNameList.join(","));
         }
         else {
-          console.log("only one player")
           url.searchParams.set('players', form.players[0].short_name);
         }
         
