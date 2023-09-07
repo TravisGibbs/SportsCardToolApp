@@ -69,8 +69,8 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/cards" element={<RecordList />} />
-          <Route path="/edit/:id" element={<Edit />} />
-          <Route path="/view/:id" element={<View />} />
+          <Route path="/cards/edit/:id" element={<Edit />} />
+          <Route path="/cards/view/:id" element={<View />} />
         </Routes>
         <div>
           <Link to="https://www.baseball-reference.com/" className={classes.link}>
