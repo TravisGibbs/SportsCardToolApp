@@ -152,7 +152,7 @@ export default function View() {
         }
         else {
           console.log("only one player")
-          url.searchParams.set('players', players[0].short_name);
+          url.searchParams.set('players', form.players[0].short_name);
         }
         
         url.searchParams.set('page', pagination.pageIndex);
